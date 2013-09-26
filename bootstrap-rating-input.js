@@ -7,15 +7,15 @@
     // A private function to highlight a star corresponding to a given value
     function _paintValue(ratingInput, value) {
       var selectedStar = $(ratingInput).find('i[data-value=' + value + ']');
-      selectedStar.removeClass('icon-star-empty').addClass('icon-star');
-      selectedStar.prevAll('i').removeClass('icon-star-empty').addClass('icon-star');
-      selectedStar.nextAll('i').removeClass('icon-star').addClass('icon-star-empty');
+      selectedStar.removeClass(classEmpty).addClass(classFull);
+      selectedStar.prevAll('i').removeClass(classEmpty).addClass(classFull);
+      selectedStar.nextAll('i').removeClass(classFull).addClass(classEmpty);
     }
 
     // A private function to remove the selected rating
     function _clearValue(ratingInput) {
       var self = $(ratingInput);
-      self.find('i').removeClass('icon-star').addClass('icon-star-empty');
+      self.find('i').removeClass(classFull).addClass(classEmpty);
       self.find('.rating-clear').hide();
       self.find('input').val('').trigger('change');
     }
@@ -26,14 +26,15 @@
       var el, i, ratingInputs,
         originalInput = $(this[element]),
         max = originalInput.data('max') || 5,
-        min = originalInput.data('min') || 0,
+        min = originalInput.data('min') || 1,
+        classFull = originalInput.data('icon') || 'icon-star',
+        classEmpty = originalInput.data('toggle') || 'icon-star-empty',
         clearable = originalInput.data('clearable') || null,
         stars = '';
-
       // HTML element construction
       for (i = min; i <= max; i++) {
         // Create <max> empty stars
-        stars += ['<i class="icon-star-empty" data-value="', i, '"></i>'].join('');
+        stars += ['<i class="'+classEmpty+'" data-value="', i, '"></i>'].join('');
       }
       // Add a clear link if clearable option is set
       if (clearable) {
